@@ -1,0 +1,5 @@
+intalar python
+
+intalar java
+
+intalar sqlite3
