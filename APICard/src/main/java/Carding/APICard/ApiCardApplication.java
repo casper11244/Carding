@@ -1,4 +1,4 @@
-package card.APICard;
+package Carding.APICard;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,6 +8,7 @@ public class ApiCardApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ApiCardApplication.class, args);
+		System.out.println("Hola MUndo");
 	}
 
 }
