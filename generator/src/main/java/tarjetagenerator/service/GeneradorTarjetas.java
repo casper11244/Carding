@@ -40,7 +40,7 @@ public class GeneradorTarjetas {
 
     private int generarAñoExpiracion() {
         int añoActual = LocalDate.now().getYear();
-        return añoActual + random.nextInt(5) + 2; // 2-6 años de validez
+        return añoActual + random.nextInt(5) + 2;
     }
 
     private int generarMesExpiracion() {

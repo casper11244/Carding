@@ -2,11 +2,10 @@ package tarjetagenerator.service;
 
 import tarjetagenerator.model.TarjetaCredito;
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class DatabaseService {
-    private static final String DB_URL = "jdbc:h2:./tarjetas_db";
+    private static final String DB_URL = "jdbc:h2:./cards_db";
     private static final String USER = "sa";
     private static final String PASSWORD = "";
 
@@ -15,26 +14,27 @@ public class DatabaseService {
              Statement stmt = conn.createStatement()) {
 
             String sql = """
-                CREATE TABLE IF NOT EXISTS tarjetas (
+                CREATE TABLE IF NOT EXISTS cards (
                     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-                    numero VARCHAR(20) NOT NULL,
-                    año INTEGER NOT NULL,
-                    mes INTEGER NOT NULL,
-                    ccv VARCHAR(4) NOT NULL,
-                    tipo VARCHAR(20) NOT NULL,
-                    fecha_generacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                    number VARCHAR(20) NOT NULL,
+                    year INTEGER NOT NULL,
+                    month INTEGER NOT NULL,
+                    cvv VARCHAR(4) NOT NULL,
+                    type VARCHAR(20) NOT NULL,
+                    generated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
             """;
 
             stmt.execute(sql);
+            System.out.println("[+] Database initialized");
 
         } catch (SQLException e) {
-            System.err.println("Error inicializando base de datos: " + e.getMessage());
+            System.err.println("[!] Database init error: " + e.getMessage());
         }
     }
 
     public void guardarTarjetas(List<TarjetaCredito> tarjetas) {
-        String sql = "INSERT INTO tarjetas (numero, año, mes, ccv, tipo) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO cards (number, year, month, cvv, type) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -53,10 +53,10 @@ public class DatabaseService {
             int[] resultados = pstmt.executeBatch();
             conn.commit();
 
-            System.out.println("✓ " + resultados.length + " tarjetas guardadas en la base de datos");
+            System.out.println("[+] " + resultados.length + " cards saved to database");
 
         } catch (SQLException e) {
-            System.err.println("Error guardando en base de datos: " + e.getMessage());
+            System.err.println("[!] Database save error: " + e.getMessage());
         }
     }
 }
