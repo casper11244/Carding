@@ -9,12 +9,17 @@ public class MenuConsola {
     private final GeneradorTarjetas generador;
     private final FileService fileService;
     private final DatabaseService databaseService;
-    private static final String GREEN = "\u001B[32m";
-    private static final String CYAN = "\u001B[36m";
-    private static final String RED = "\u001B[31m";
-    private static final String YELLOW = "\u001B[33m";
+
+    // Paleta de colores Hacker / Terminal Retro
+    private static final String G = "\u001B[32m";    // Green (Matrix)
+    private static final String BG = "\u001B[1;32m"; // Bold Green
+    private static final String R = "\u001B[31m";    // Red (Alert)
+    private static final String Y = "\u001B[33m";    // Yellow (Warning)
+    private static final String B = "\u001B[34m";    // Blue
+    private static final String C = "\u001B[36m";    // Cyan (Info)
+    private static final String W = "\u001B[37m";    // White
     private static final String RESET = "\u001B[0m";
-    private static final String BOLD = "\u001B[1m";
+    private static final String BLINK = "\u001B[5m";
 
     public MenuConsola() {
         this.scanner = new Scanner(System.in);
@@ -24,6 +29,8 @@ public class MenuConsola {
     }
 
     public void iniciar() {
+        limpiarPantalla();
+        mostrarBootSequence();
         mostrarBanner();
 
         while (true) {
@@ -34,40 +41,49 @@ public class MenuConsola {
                 case 1 -> generarTarjetas();
                 case 2 -> mostrarInfo();
                 case 3 -> {
-                    System.out.println(CYAN + "\n[*] Shutting down..." + RESET);
+                    System.out.println(R + "\n[!] TERMINATING CONNECTION..." + RESET);
+                    pausa(500);
+                    System.out.println(G + "[+] SYSTEM SHUTDOWN COMPLETE. GOODBYE, OPERATOR." + RESET);
                     return;
                 }
-                default -> System.out.println(RED + "\n[!] Invalid option" + RESET);
+                default -> System.out.println(R + "\n[!] ACCESS DENIED: INVALID COMMAND" + RESET);
             }
         }
     }
 
+    private void mostrarBootSequence() {
+        String[] logs = {
+                "[*] INITIALIZING KERNEL...",
+                "[*] LOADING LUHN_ALGO_V2.1...",
+                "[*] ESTABLISHING H2 DATABASE LINK...",
+                "[*] BYPASSING ENCRYPTION LAYERS...",
+                "[*] CONNECTION SECURE."
+        };
+        for (String log : logs) {
+            System.out.println(G + log + RESET);
+            pausa(300);
+        }
+        System.out.println("\n");
+    }
+
     private void mostrarBanner() {
-        System.out.println(CYAN + BOLD);
-        System.out.println("╔══════════════════════════════════════════════════════════════════╗");
-        System.out.println("║                                                                  ║");
-        System.out.println("║     ██████╗ █████╗ ██████╗ ██████╗ ██╗███╗   ██╗ ██████╗         ║");
-        System.out.println("║    ██╔════╝██╔══██╗██╔══██╗██╔══██╗██║████╗  ██║██╔════╝         ║");
-        System.out.println("║    ██║     ███████║██████╔╝██║  ██║██║██╔██╗ ██║██║  ███╗        ║");
-        System.out.println("║    ██║     ██╔══██║██╔══██╗██║  ██║██║██║╚██╗██║██║   ██║        ║");
-        System.out.println("║    ╚██████╗██║  ██║██║  ██║██████╔╝██║██║ ╚████║╚██████╔╝        ║");
-        System.out.println("║     ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚═╝╚═╝  ╚═══╝ ╚═════╝         ║");
-        System.out.println("║                                                                  ║");
-        System.out.println("║              » LUHN ALGORITHM CARD GENERATOR v2.1 «              ║");
-        System.out.println("║                    » JAVA 21 | MAVEN BUILD «                     ║");
-        System.out.println("╚══════════════════════════════════════════════════════════════════╝");
-        System.out.println(RESET);
+        System.out.println(G + "####################################################################");
+        System.out.println(BG + "   ______             __      ______                           ");
+        System.out.println("  / ____/___ ________/ /     / ____/__  ____  ___  _________ _/ /_____  _____");
+        System.out.println(" / /   / __ `/ ___/ __  /     / / __/ _ \\/ __ \\/ _ \\/ ___/ __ `/ __/ __ \\/ ___/");
+        System.out.println("/ /___/ /_/ / /  / /_/ /     / /_/ /  __/ / / /  __/ /  / /_/ / /_/ /_/ / /    ");
+        System.out.println("\\____/\\__,_/_/   \\__,_/      \\____/\\___/_/ /_/\\___/_/   \\__,_/\\__/\\____/_/     ");
+        System.out.println(G + "\n              >> NETWORK ENCRYPTION & DATA GENERATOR <<             ");
+        System.out.println("####################################################################" + RESET);
     }
 
     private void mostrarMenuPrincipal() {
-        System.out.println(CYAN + "\n┌────────────────────────────────────────────────────────────────┐");
-        System.out.println("│                         MAIN MENU                               │");
-        System.out.println("├────────────────────────────────────────────────────────────────┤");
-        System.out.println("│  [1] Generate Cards                                             │");
-        System.out.println("│  [2] System Information                                         │");
-        System.out.println("│  [3] Exit                                                       │");
-        System.out.println("└────────────────────────────────────────────────────────────────┘");
-        System.out.print(RESET + "\n[?] Select option > ");
+        System.out.println(G + "\n┌─── " + W + "CORE INTERFACE" + G + " ───────────────────────────────────────────────┐");
+        System.out.println("│ " + BG + "[1]" + G + " INJECT_DATA (Generate Cards)                               │");
+        System.out.println("│ " + BG + "[2]" + G + " SYS_STATUS  (Information)                                  │");
+        System.out.println("│ " + BG + "[3]" + G + " DISCONNECT  (Exit)                                         │");
+        System.out.println("└──────────────────────────────────────────────────────────────────┘");
+        System.out.print(BG + "OPERATOR@TERMINAL:~$ " + RESET);
     }
 
     private int leerOpcion() {
@@ -79,111 +95,97 @@ public class MenuConsola {
     }
 
     private void mostrarInfo() {
-        System.out.println(CYAN + "\n┌────────────────────────────────────────────────────────────────┐");
-        System.out.println("│                     SYSTEM INFORMATION                          │");
-        System.out.println("├────────────────────────────────────────────────────────────────┤");
-        System.out.println("│  Available Card Types:                                          │");
-        System.out.println("│                                                                  │");
+        System.out.println(C + "\n[SYSTEM REPORT]");
+        System.out.println(G + "--------------------------------------------------------------------");
+        System.out.println(W + "MOD_10_STATUS: " + G + "ACTIVE");
+        System.out.println(W + "DB_LINK:       " + G + "LOCAL_H2_SQL");
+        System.out.println(W + "FILE_OUTPUT:   " + G + "DIRECTORY: /output/");
+        System.out.println(W + "CARD_SCHEMES:  ");
         TipoTarjeta.mostrarOpciones();
-        System.out.println("│                                                                  │");
-        System.out.println("│  Output Format: number|year|month|cvv                           │");
-        System.out.println("│  Algorithm: Luhn (Mod 10)                                       │");
-        System.out.println("│  Storage: File (output/) & H2 Database                          │");
-        System.out.println("└────────────────────────────────────────────────────────────────┘" + RESET);
+        System.out.println(G + "--------------------------------------------------------------------" + RESET);
     }
 
     private void generarTarjetas() {
-        System.out.println(CYAN + "\n┌────────────────────────────────────────────────────────────────┐");
-        System.out.println("│                      CARD GENERATION                            │");
-        System.out.println("└────────────────────────────────────────────────────────────────┘" + RESET);
-
-        System.out.println(YELLOW + "\n[?] Select card type:" + RESET);
+        System.out.println(Y + "\n[!] TARGETING PROTOCOLS..." + RESET);
         TipoTarjeta.mostrarOpciones();
-        System.out.print(GREEN + "\n[>] Enter option (1-6): " + RESET);
+        System.out.print(BG + "\n[?] SELECT SCHEME ID: " + RESET);
 
         int tipoOpcion = leerOpcion();
         TipoTarjeta tipo = TipoTarjeta.fromOpcion(tipoOpcion);
 
         if (tipo == null) {
-            System.out.println(RED + "[!] Invalid card type" + RESET);
+            System.out.println(R + "[!] ERROR: NULL_POINTER_EXCEPTION - INVALID SCHEME" + RESET);
             return;
         }
 
-        System.out.print(GREEN + "[>] Number of cards to generate: " + RESET);
+        System.out.print(BG + "[?] PAYLOAD QUANTITY (1-1000): " + RESET);
         int cantidad;
         try {
             cantidad = Integer.parseInt(scanner.nextLine().trim());
             if (cantidad <= 0 || cantidad > 1000) {
-                System.out.println(RED + "[!] Quantity must be between 1 and 1000" + RESET);
+                System.out.println(R + "[!] ERROR: BUFFER_OVERFLOW_PREVENTION - RANGE 1-1000 ONLY" + RESET);
                 return;
             }
         } catch (NumberFormatException e) {
-            System.out.println(RED + "[!] Invalid quantity" + RESET);
+            System.out.println(R + "[!] ERROR: DATA_MISMATCH" + RESET);
             return;
         }
 
-        System.out.print(CYAN + "\n[*] Generating " + cantidad + " " + tipo.getNombre() + " cards");
-        for (int i = 0; i < 3; i++) {
-            try { Thread.sleep(300); System.out.print("."); } catch (InterruptedException e) {}
+        System.out.print(G + "\n[*] CALCULATING LUHN CHECKSUMS");
+        for (int i = 0; i < 5; i++) {
+            pausa(200);
+            System.out.print(" #");
         }
-        System.out.println(RESET);
+        System.out.println(" 100%\n" + RESET);
 
         List<TarjetaCredito> tarjetas = generador.generarTarjetas(cantidad, tipo);
 
-        System.out.println(GREEN + "\n[✓] Generation complete! " + tarjetas.size() + " cards generated\n" + RESET);
-        System.out.println(CYAN + "┌─────────────────────────────────────────────────────────────────────────────┐");
-        System.out.println("│                         GENERATED CARDS                                       │");
-        System.out.println("├─────────────────────────────────────────────────────────────────────────────┤");
-        System.out.println("│  Format: NUMBER|YEAR|MONTH|CVV                                                │");
-        System.out.println("├─────────────────────────────────────────────────────────────────────────────┤" + RESET);
+        System.out.println(G + ">> DECODED DATA STREAM <<");
+        System.out.println(G + "====================================================================" + RESET);
 
-        int contador = 1;
-        for (TarjetaCredito tarjeta : tarjetas) {
-            if (contador % 2 == 0) {
-                System.out.printf(CYAN + "│  [%03d] " + RESET + "%s" + CYAN + "  │\n" + RESET,
-                        contador, tarjeta.formatoEspecificado());
-            } else {
-                System.out.printf("│  [%03d] %s  │\n", contador, tarjeta.formatoEspecificado());
-            }
-            contador++;
+        for (int i = 0; i < tarjetas.size(); i++) {
+            String raw = tarjetas.get(i).formatoEspecificado();
+            System.out.printf(G + " [%03d] " + W + ">> " + G + "%s\n" + RESET, (i + 1), raw);
+            pausa(50); // Efecto visual de "scroll"
         }
+        System.out.println(G + "====================================================================" + RESET);
 
-        System.out.println(CYAN + "└─────────────────────────────────────────────────────────────────────────────┘" + RESET);
-
-        System.out.println(CYAN + "\n┌────────────────────────────────────────────────────────────────┐");
-        System.out.println("│                      SAVE OPTIONS                               │");
-        System.out.println("├────────────────────────────────────────────────────────────────┤");
-        System.out.println("│  [1] Save to text file                                          │");
-        System.out.println("│  [2] Save to H2 database                                        │");
-        System.out.println("│  [3] Save to both                                               │");
-        System.out.println("│  [4] Don't save                                                 │");
-        System.out.println("└────────────────────────────────────────────────────────────────┘");
-        System.out.print(RESET + "\n[?] Select option > ");
+        System.out.println(Y + "\n[?] SELECT STORAGE DESTINATION:");
+        System.out.println(G + " [1] EXPORT_TO_TXT");
+        System.out.println(" [2] COMMIT_TO_DB");
+        System.out.println(" [3] EXECUTE_BOTH");
+        System.out.println(" [4] DISCARD_PAYLOAD");
+        System.out.print(BG + "\nOPERATOR@STORAGE:~$ " + RESET);
 
         int opcionGuardado = leerOpcion();
 
         switch (opcionGuardado) {
             case 1 -> {
                 String archivo = fileService.guardarEnArchivo(tarjetas);
-                System.out.println(GREEN + "[+] Cards saved to: " + archivo + RESET);
+                System.out.println(G + "[+] FILE_CREATED: " + archivo + RESET);
             }
             case 2 -> {
+                System.out.println(C + "[*] INITIALIZING SQL_HANDSHAKE..." + RESET);
                 databaseService.inicializarBaseDatos();
                 databaseService.guardarTarjetas(tarjetas);
+                System.out.println(G + "[+] DB_TRANSACTION_SUCCESS" + RESET);
             }
             case 3 -> {
-                String archivo = fileService.guardarEnArchivo(tarjetas);
-                System.out.println(GREEN + "[+] Cards saved to: " + archivo + RESET);
+                fileService.guardarEnArchivo(tarjetas);
                 databaseService.inicializarBaseDatos();
                 databaseService.guardarTarjetas(tarjetas);
+                System.out.println(G + "[+] REDUNDANCY_SAVED: FILE & DB SYNCED" + RESET);
             }
-            case 4 -> System.out.println(YELLOW + "[*] Cards not saved" + RESET);
-            default -> System.out.println(RED + "[!] Invalid option, cards not saved" + RESET);
+            default -> System.out.println(Y + "[!] DATA VOLATILIZED (NOT SAVED)" + RESET);
         }
+    }
 
-        System.out.println(CYAN + "\n[+] Operation completed successfully!" + RESET);
-        System.out.println("    • Type: " + tipo.getNombre());
-        System.out.println("    • Generated: " + tarjetas.size() + " cards");
-        System.out.println("    • Format: number|year|month|cvv");
+    private void pausa(int ms) {
+        try { Thread.sleep(ms); } catch (InterruptedException ignored) {}
+    }
+
+    private void limpiarPantalla() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 }
