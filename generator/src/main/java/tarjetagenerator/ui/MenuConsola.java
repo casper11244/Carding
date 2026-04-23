@@ -11,15 +11,14 @@ public class MenuConsola {
     private final DatabaseService databaseService;
 
     // Paleta de colores Hacker / Terminal Retro
-    private static final String G = "\u001B[32m";    // Green (Matrix)
-    private static final String BG = "\u001B[1;32m"; // Bold Green
-    private static final String R = "\u001B[31m";    // Red (Alert)
-    private static final String Y = "\u001B[33m";    // Yellow (Warning)
-    private static final String B = "\u001B[34m";    // Blue
-    private static final String C = "\u001B[36m";    // Cyan (Info)
-    private static final String W = "\u001B[37m";    // White
+    private static final String G = "\u001B[32m";    // Verde (Matrix)
+    private static final String BG = "\u001B[1;32m"; // Verde Negrita
+    private static final String R = "\u001B[31m";    // Rojo (Alerta)
+    private static final String Y = "\u001B[33m";    // Amarillo (Advertencia)
+    private static final String B = "\u001B[34m";    // Azul
+    private static final String C = "\u001B[36m";    // Cian (Info)
+    private static final String W = "\u001B[37m";    // Blanco
     private static final String RESET = "\u001B[0m";
-    private static final String BLINK = "\u001B[5m";
 
     public MenuConsola() {
         this.scanner = new Scanner(System.in);
@@ -41,23 +40,23 @@ public class MenuConsola {
                 case 1 -> generarTarjetas();
                 case 2 -> mostrarInfo();
                 case 3 -> {
-                    System.out.println(R + "\n[!] TERMINATING CONNECTION..." + RESET);
+                    System.out.println(R + "\n[!] TERMINANDO CONEXIÓN..." + RESET);
                     pausa(500);
-                    System.out.println(G + "[+] SYSTEM SHUTDOWN COMPLETE. GOODBYE, OPERATOR." + RESET);
+                    System.out.println(G + "[+] CIERRE DE SISTEMA COMPLETADO. ADIÓS, OPERADOR." + RESET);
                     return;
                 }
-                default -> System.out.println(R + "\n[!] ACCESS DENIED: INVALID COMMAND" + RESET);
+                default -> System.out.println(R + "\n[!] ACCESO DENEGADO: COMANDO INVÁLIDO" + RESET);
             }
         }
     }
 
     private void mostrarBootSequence() {
         String[] logs = {
-                "[*] INITIALIZING KERNEL...",
-                "[*] LOADING LUHN_ALGO_V2.1...",
-                "[*] ESTABLISHING H2 DATABASE LINK...",
-                "[*] BYPASSING ENCRYPTION LAYERS...",
-                "[*] CONNECTION SECURE."
+                "[*] INICIALIZANDO KERNEL...",
+                "[*] CARGANDO ALGORITMO_LUHN_V2.1...",
+                "[*] ESTABLECIENDO ENLACE CON BASE DE DATOS H2...",
+                "[*] VERIFICANDO CAPAS DE ENCRIPTACIÓN...",
+                "[*] CONEXIÓN SEGURA ESTABLECIDA."
         };
         for (String log : logs) {
             System.out.println(G + log + RESET);
@@ -67,23 +66,23 @@ public class MenuConsola {
     }
 
     private void mostrarBanner() {
-        System.out.println(G + "####################################################################");
-        System.out.println(BG + "   ______             __      ______                           ");
-        System.out.println("  / ____/___ ________/ /     / ____/__  ____  ___  _________ _/ /_____  _____");
+        System.out.println(G + "╔══════════════════════════════════════════════════════════════════╗");
+        System.out.println(BG + "   ______               ______                                     ");
+        System.out.println("  / ____/___ __________/ /     / ____/___  ____  ___  _________ _/ /_____  _____");
         System.out.println(" / /   / __ `/ ___/ __  /     / / __/ _ \\/ __ \\/ _ \\/ ___/ __ `/ __/ __ \\/ ___/");
         System.out.println("/ /___/ /_/ / /  / /_/ /     / /_/ /  __/ / / /  __/ /  / /_/ / /_/ /_/ / /    ");
         System.out.println("\\____/\\__,_/_/   \\__,_/      \\____/\\___/_/ /_/\\___/_/   \\__,_/\\__/\\____/_/     ");
-        System.out.println(G + "\n              >> NETWORK ENCRYPTION & DATA GENERATOR <<             ");
-        System.out.println("####################################################################" + RESET);
+        System.out.println(G + "\n             >> GENERADOR DE DATOS Y ENCRIPTACIÓN <<               ");
+        System.out.println("╚══════════════════════════════════════════════════════════════════╝" + RESET);
     }
 
     private void mostrarMenuPrincipal() {
-        System.out.println(G + "\n┌─── " + W + "CORE INTERFACE" + G + " ───────────────────────────────────────────────┐");
-        System.out.println("│ " + BG + "[1]" + G + " INJECT_DATA (Generate Cards)                               │");
-        System.out.println("│ " + BG + "[2]" + G + " SYS_STATUS  (Information)                                  │");
-        System.out.println("│ " + BG + "[3]" + G + " DISCONNECT  (Exit)                                         │");
-        System.out.println("└──────────────────────────────────────────────────────────────────┘");
-        System.out.print(BG + "OPERATOR@TERMINAL:~$ " + RESET);
+        System.out.println(G + "\n┌─── " + W + "INTERFAZ DE NÚCLEO" + G + " ──────────────────────────────────────────┐");
+        System.out.println("│ " + BG + "[1]" + G + " Generar Tarjetas de Crédito                               │");
+        System.out.println("│ " + BG + "[2]" + G + " Reporte del Sistema                                       │");
+        System.out.println("│ " + BG + "[3]" + G + " Finalizar Sesión                                          │");
+        System.out.println("└────────────────────────────────────────────────────────────────┘");
+        System.out.print(BG + "OPERADOR@TERMINAL:~$ " + RESET);
     }
 
     private int leerOpcion() {
@@ -95,88 +94,88 @@ public class MenuConsola {
     }
 
     private void mostrarInfo() {
-        System.out.println(C + "\n[SYSTEM REPORT]");
+        System.out.println(C + "\n[REPORTE DEL SISTEMA]");
         System.out.println(G + "--------------------------------------------------------------------");
-        System.out.println(W + "MOD_10_STATUS: " + G + "ACTIVE");
-        System.out.println(W + "DB_LINK:       " + G + "LOCAL_H2_SQL");
-        System.out.println(W + "FILE_OUTPUT:   " + G + "DIRECTORY: /output/");
-        System.out.println(W + "CARD_SCHEMES:  ");
+        System.out.println(W + "ESTADO_MOD_10:  " + G + "ACTIVO");
+        System.out.println(W + "ENLACE_DB:      " + G + "LOCAL_H2_SQL");
+        System.out.println(W + "SALIDA_ARCHIVOS:" + G + " DIRECTORIO: /output/");
+        System.out.println(W + "ESQUEMAS_DISP:  ");
         TipoTarjeta.mostrarOpciones();
         System.out.println(G + "--------------------------------------------------------------------" + RESET);
     }
 
     private void generarTarjetas() {
-        System.out.println(Y + "\n[!] TARGETING PROTOCOLS..." + RESET);
+        System.out.println(Y + "\n[!] CONFIGURANDO PROTOCOLOS DE GENERACIÓN..." + RESET);
         TipoTarjeta.mostrarOpciones();
-        System.out.print(BG + "\n[?] SELECT SCHEME ID: " + RESET);
+        System.out.print(BG + "\n[?] SELECCIONE ID DE ESQUEMA: " + RESET);
 
         int tipoOpcion = leerOpcion();
         TipoTarjeta tipo = TipoTarjeta.fromOpcion(tipoOpcion);
 
         if (tipo == null) {
-            System.out.println(R + "[!] ERROR: NULL_POINTER_EXCEPTION - INVALID SCHEME" + RESET);
+            System.out.println(R + "[!] ERROR: ESQUEMA NO VÁLIDO - OPERACIÓN ABORTADA" + RESET);
             return;
         }
 
-        System.out.print(BG + "[?] PAYLOAD QUANTITY (1-1000): " + RESET);
+        System.out.print(BG + "[?] CANTIDAD DE CARGA (1-1000): " + RESET);
         int cantidad;
         try {
             cantidad = Integer.parseInt(scanner.nextLine().trim());
             if (cantidad <= 0 || cantidad > 1000) {
-                System.out.println(R + "[!] ERROR: BUFFER_OVERFLOW_PREVENTION - RANGE 1-1000 ONLY" + RESET);
+                System.out.println(R + "[!] ERROR: PREVENCIÓN DE DESBORDAMIENTO - RANGO 1-1000" + RESET);
                 return;
             }
         } catch (NumberFormatException e) {
-            System.out.println(R + "[!] ERROR: DATA_MISMATCH" + RESET);
+            System.out.println(R + "[!] ERROR: TIPO DE DATO NO COMPATIBLE" + RESET);
             return;
         }
 
-        System.out.print(G + "\n[*] CALCULATING LUHN CHECKSUMS");
-        for (int i = 0; i < 5; i++) {
-            pausa(200);
-            System.out.print(" #");
+        System.out.print(G + "\n[*] CALCULANDO SUMAS DE COMPROBACIÓN LUHN [");
+        for (int i = 0; i < 10; i++) {
+            pausa(150);
+            System.out.print("#");
         }
-        System.out.println(" 100%\n" + RESET);
+        System.out.println("] 100%\n" + RESET);
 
         List<TarjetaCredito> tarjetas = generador.generarTarjetas(cantidad, tipo);
 
-        System.out.println(G + ">> DECODED DATA STREAM <<");
-        System.out.println(G + "====================================================================" + RESET);
+        System.out.println(G + ">> FLUJO DE DATOS DECODIFICADOS <<");
+        System.out.println(G + "════════════════════════════════════════════════════════════════════" + RESET);
 
         for (int i = 0; i < tarjetas.size(); i++) {
             String raw = tarjetas.get(i).formatoEspecificado();
-            System.out.printf(G + " [%03d] " + W + ">> " + G + "%s\n" + RESET, (i + 1), raw);
-            pausa(50); // Efecto visual de "scroll"
+            System.out.printf(G + " [%03d] " + W + "=> " + G + "%s\n" + RESET, (i + 1), raw);
+            if (cantidad < 100) pausa(30); // Solo hacer scroll visual si no son demasiadas
         }
-        System.out.println(G + "====================================================================" + RESET);
+        System.out.println(G + "════════════════════════════════════════════════════════════════════" + RESET);
 
-        System.out.println(Y + "\n[?] SELECT STORAGE DESTINATION:");
-        System.out.println(G + " [1] EXPORT_TO_TXT");
-        System.out.println(" [2] COMMIT_TO_DB");
-        System.out.println(" [3] EXECUTE_BOTH");
-        System.out.println(" [4] DISCARD_PAYLOAD");
-        System.out.print(BG + "\nOPERATOR@STORAGE:~$ " + RESET);
+        System.out.println(Y + "\n[?] SELECCIONE DESTINO DE ALMACENAMIENTO:");
+        System.out.println(G + " [1] EXPORTAR_A_TXT");
+        System.out.println(" [2] REGISTRAR_EN_BD");
+        System.out.println(" [3] EJECUTAR_AMBOS");
+        System.out.println(" [4] DESCARTAR_DATOS");
+        System.out.print(BG + "\nOPERADOR@ALMACENAMIENTO:~$ " + RESET);
 
         int opcionGuardado = leerOpcion();
 
         switch (opcionGuardado) {
             case 1 -> {
                 String archivo = fileService.guardarEnArchivo(tarjetas);
-                System.out.println(G + "[+] FILE_CREATED: " + archivo + RESET);
+                System.out.println(G + "[+] ARCHIVO_CREADO: " + archivo + RESET);
             }
             case 2 -> {
-                System.out.println(C + "[*] INITIALIZING SQL_HANDSHAKE..." + RESET);
+                System.out.println(C + "[*] INICIANDO PROTOCOLO SQL_HANDSHAKE..." + RESET);
                 databaseService.inicializarBaseDatos();
                 databaseService.guardarTarjetas(tarjetas);
-                System.out.println(G + "[+] DB_TRANSACTION_SUCCESS" + RESET);
+                System.out.println(G + "[+] TRANSACCIÓN_BD_EXITOSA" + RESET);
             }
             case 3 -> {
                 fileService.guardarEnArchivo(tarjetas);
                 databaseService.inicializarBaseDatos();
                 databaseService.guardarTarjetas(tarjetas);
-                System.out.println(G + "[+] REDUNDANCY_SAVED: FILE & DB SYNCED" + RESET);
+                System.out.println(G + "[+] REDUNDANCIA COMPLETADA: ARCHIVO Y BD SINCRONIZADOS" + RESET);
             }
-            default -> System.out.println(Y + "[!] DATA VOLATILIZED (NOT SAVED)" + RESET);
+            default -> System.out.println(Y + "[!] DATOS VOLATILIZADOS (NO GUARDADOS)" + RESET);
         }
     }
 
@@ -185,6 +184,7 @@ public class MenuConsola {
     }
 
     private void limpiarPantalla() {
+        // Funciona en terminales modernas/Linux/Mac. En Windows CMD depende de la versión.
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
