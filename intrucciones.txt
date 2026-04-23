@@ -3,3 +3,18 @@ intalar python
 intalar java
 
 intalar sqlite3
+
+
+-- Crear base de datos (opcional, si no existe)
+sqlite3 tarjetas.db
+
+-- si ya existe .open tarjetas.db
+
+-- Crear tabla
+CREATE TABLE tarjetas (
+    id_tarjeta INTEGER PRIMARY KEY AUTOINCREMENT,
+    numero TEXT NOT NULL,
+    mes INTEGER NOT NULL,
+    anio INTEGER NOT NULL,
+    ccv INTEGER NOT NULL
+);
