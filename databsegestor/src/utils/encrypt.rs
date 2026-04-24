@@ -1,7 +1,7 @@
 use base64::{Engine as _, engine::general_purpose};
 use rand::Rng;
 
-pub fn 1encriptar_basico(texto: &str) -> String {
+pub fn encriptar_basico(texto: &str) -> String {
     // Encriptación básica para demostración
     let mut rng = rand::thread_rng();
     let salt: u8 = rng.gen();
