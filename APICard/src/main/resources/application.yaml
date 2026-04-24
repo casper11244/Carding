@@ -1,3 +1,23 @@
 spring:
   application:
     name: APICard
+
+  datasource:
+    url: jdbc:sqlite:/home/casper/IdeaProjects/Carding/tarjetas.db
+    driver-class-name: org.sqlite.JDBC
+    username:
+    password:
+
+  jpa:
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api/v1
