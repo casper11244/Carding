@@ -18,3 +18,15 @@ CREATE TABLE tarjetas (
     anio INTEGER NOT NULL,
     ccv INTEGER NOT NULL
 );
+
+
+-----------------------------------------------------------------------
+intalar rust
+
+ejecutar
+
+intalar sudo dnf install gcc
+
+sudo dnf install pkg-config openssl-devel
+
+-------------------------------------------------------------------------
