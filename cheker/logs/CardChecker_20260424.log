@@ -1,0 +1,6 @@
+2026-04-24 14:29:50,977 - CardChecker - INFO - [37mInicializando sistema de verificación de tarjetas...[0m
+2026-04-24 14:30:07,948 - CardChecker - INFO - [37mSistema de verificación inicializado correctamente[0m
+2026-04-24 14:31:09,152 - CardChecker - INFO - [37mInicializando sistema de verificación de tarjetas...[0m
+2026-04-24 14:32:07,275 - CardChecker - INFO - [37mInicializando sistema de verificación de tarjetas...[0m
+2026-04-24 14:32:23,910 - CardChecker - INFO - [37mSistema de verificación inicializado correctamente[0m
+2026-04-24 14:32:42,160 - CardChecker - ERROR - [31mNo se pudieron obtener tarjetas desde la API[0m

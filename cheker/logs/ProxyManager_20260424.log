@@ -1,0 +1,44 @@
+2026-04-24 14:29:50,978 - ProxyManager - INFO - [37mInicializando gestor de proxies...[0m
+2026-04-24 14:29:50,978 - ProxyManager - WARNING - [33mNo se pudieron cargar proxies cacheados: [Errno 2] No such file or directory: 'proxies_cache.txt'[0m
+2026-04-24 14:29:50,978 - ProxyManager - INFO - [37mObteniendo proxies desde: https://api.proxyscrape.com/v2/?request=get&protocol=http&timeout=10000&country=all&ssl=all&anonymity=all[0m
+2026-04-24 14:29:51,422 - ProxyManager - INFO - [37mObtenidos 0 proxies desde https://api.proxyscrape.com/v2/?request=get&protocol=http&timeout=10000&country=all&ssl=all&anonymity=all[0m
+2026-04-24 14:29:51,422 - ProxyManager - INFO - [37mObteniendo proxies desde: https://raw.githubusercontent.com/TheSpeedX/PROXY_LIST/master/http.txt[0m
+2026-04-24 14:29:51,685 - ProxyManager - WARNING - [33mError al obtener proxies desde https://raw.githubusercontent.com/TheSpeedX/PROXY_LIST/master/http.txt: 404[0m
+2026-04-24 14:29:51,686 - ProxyManager - INFO - [37mObteniendo proxies desde: https://raw.githubusercontent.com/ShiftyTR/Proxy-List/master/http.txt[0m
+2026-04-24 14:29:51,888 - ProxyManager - INFO - [37mObtenidos 40 proxies desde https://raw.githubusercontent.com/ShiftyTR/Proxy-List/master/http.txt[0m
+2026-04-24 14:29:51,889 - ProxyManager - INFO - [37mTotal de proxies únicos obtenidos: 40[0m
+2026-04-24 14:29:51,890 - ProxyManager - INFO - [37mVerificando 40 proxies...[0m
+2026-04-24 14:30:07,948 - ProxyManager - INFO - [37mProxies verificados: 2/40 funcionan[0m
+2026-04-24 14:30:07,948 - ProxyManager - INFO - [37mLista de proxies actualizada: 2 proxies funcionales[0m
+2026-04-24 14:30:20,015 - ProxyManager - INFO - [37mObteniendo proxies desde: https://api.proxyscrape.com/v2/?request=get&protocol=http&timeout=10000&country=all&ssl=all&anonymity=all[0m
+2026-04-24 14:30:20,328 - ProxyManager - INFO - [37mObtenidos 0 proxies desde https://api.proxyscrape.com/v2/?request=get&protocol=http&timeout=10000&country=all&ssl=all&anonymity=all[0m
+2026-04-24 14:30:20,329 - ProxyManager - INFO - [37mObteniendo proxies desde: https://raw.githubusercontent.com/TheSpeedX/PROXY_LIST/master/http.txt[0m
+2026-04-24 14:30:20,526 - ProxyManager - WARNING - [33mError al obtener proxies desde https://raw.githubusercontent.com/TheSpeedX/PROXY_LIST/master/http.txt: 404[0m
+2026-04-24 14:30:20,526 - ProxyManager - INFO - [37mObteniendo proxies desde: https://raw.githubusercontent.com/ShiftyTR/Proxy-List/master/http.txt[0m
+2026-04-24 14:30:20,679 - ProxyManager - INFO - [37mObtenidos 40 proxies desde https://raw.githubusercontent.com/ShiftyTR/Proxy-List/master/http.txt[0m
+2026-04-24 14:30:20,680 - ProxyManager - INFO - [37mTotal de proxies únicos obtenidos: 40[0m
+2026-04-24 14:30:20,681 - ProxyManager - INFO - [37mVerificando 40 proxies...[0m
+2026-04-24 14:30:36,865 - ProxyManager - INFO - [37mProxies verificados: 2/40 funcionan[0m
+2026-04-24 14:30:36,865 - ProxyManager - INFO - [37mLista de proxies actualizada: 2 proxies funcionales[0m
+2026-04-24 14:31:09,153 - ProxyManager - INFO - [37mInicializando gestor de proxies...[0m
+2026-04-24 14:31:09,153 - ProxyManager - WARNING - [33mNo se pudieron cargar proxies cacheados: [Errno 2] No such file or directory: 'proxies_cache.txt'[0m
+2026-04-24 14:31:09,153 - ProxyManager - INFO - [37mObteniendo proxies desde: https://api.proxyscrape.com/v2/?request=get&protocol=http&timeout=10000&country=all&ssl=all&anonymity=all[0m
+2026-04-24 14:31:09,397 - ProxyManager - INFO - [37mObtenidos 0 proxies desde https://api.proxyscrape.com/v2/?request=get&protocol=http&timeout=10000&country=all&ssl=all&anonymity=all[0m
+2026-04-24 14:31:09,397 - ProxyManager - INFO - [37mObteniendo proxies desde: https://raw.githubusercontent.com/TheSpeedX/PROXY_LIST/master/http.txt[0m
+2026-04-24 14:31:09,640 - ProxyManager - WARNING - [33mError al obtener proxies desde https://raw.githubusercontent.com/TheSpeedX/PROXY_LIST/master/http.txt: 404[0m
+2026-04-24 14:31:09,640 - ProxyManager - INFO - [37mObteniendo proxies desde: https://raw.githubusercontent.com/ShiftyTR/Proxy-List/master/http.txt[0m
+2026-04-24 14:31:09,841 - ProxyManager - INFO - [37mObtenidos 40 proxies desde https://raw.githubusercontent.com/ShiftyTR/Proxy-List/master/http.txt[0m
+2026-04-24 14:31:09,841 - ProxyManager - INFO - [37mTotal de proxies únicos obtenidos: 40[0m
+2026-04-24 14:31:09,843 - ProxyManager - INFO - [37mVerificando 40 proxies...[0m
+2026-04-24 14:32:07,275 - ProxyManager - INFO - [37mInicializando gestor de proxies...[0m
+2026-04-24 14:32:07,275 - ProxyManager - WARNING - [33mNo se pudieron cargar proxies cacheados: [Errno 2] No such file or directory: 'proxies_cache.txt'[0m
+2026-04-24 14:32:07,275 - ProxyManager - INFO - [37mObteniendo proxies desde: https://api.proxyscrape.com/v2/?request=get&protocol=http&timeout=10000&country=all&ssl=all&anonymity=all[0m
+2026-04-24 14:32:07,508 - ProxyManager - INFO - [37mObtenidos 0 proxies desde https://api.proxyscrape.com/v2/?request=get&protocol=http&timeout=10000&country=all&ssl=all&anonymity=all[0m
+2026-04-24 14:32:07,508 - ProxyManager - INFO - [37mObteniendo proxies desde: https://raw.githubusercontent.com/TheSpeedX/PROXY_LIST/master/http.txt[0m
+2026-04-24 14:32:07,709 - ProxyManager - WARNING - [33mError al obtener proxies desde https://raw.githubusercontent.com/TheSpeedX/PROXY_LIST/master/http.txt: 404[0m
+2026-04-24 14:32:07,710 - ProxyManager - INFO - [37mObteniendo proxies desde: https://raw.githubusercontent.com/ShiftyTR/Proxy-List/master/http.txt[0m
+2026-04-24 14:32:07,861 - ProxyManager - INFO - [37mObtenidos 40 proxies desde https://raw.githubusercontent.com/ShiftyTR/Proxy-List/master/http.txt[0m
+2026-04-24 14:32:07,862 - ProxyManager - INFO - [37mTotal de proxies únicos obtenidos: 40[0m
+2026-04-24 14:32:07,863 - ProxyManager - INFO - [37mVerificando 40 proxies...[0m
+2026-04-24 14:32:23,909 - ProxyManager - INFO - [37mProxies verificados: 2/40 funcionan[0m
+2026-04-24 14:32:23,910 - ProxyManager - INFO - [37mLista de proxies actualizada: 2 proxies funcionales[0m

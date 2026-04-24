@@ -1,0 +1,23 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <list>
+          <option value="requests" />
+          <option value="colorama" />
+          <option value="beautifulsoup4" />
+          <option value="lxml" />
+          <option value="numpy" />
+          <option value="pandas" />
+          <option value="tabulate" />
+          <option value="python-dateutil" />
+          <option value="tqdm" />
+          <option value="pysocks" />
+          <option value="stem" />
+          <option value="psutil" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>

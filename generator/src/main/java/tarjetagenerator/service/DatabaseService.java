@@ -1,62 +1,76 @@
 package tarjetagenerator.service;
 
 import tarjetagenerator.model.TarjetaCredito;
-import java.sql.*;
+import java.net.URI;
+import java.net.http.*;
 import java.util.List;
 
 public class DatabaseService {
-    private static final String DB_URL = "jdbc:h2:./cards_db";
-    private static final String USER = "sa";
-    private static final String PASSWORD = "";
+    private static final String API_URL = "http://localhost:8080/api/v1/tarjetas";
+    private final HttpClient httpClient;
+
+    public DatabaseService() {
+        this.httpClient = HttpClient.newHttpClient();
+    }
 
     public void inicializarBaseDatos() {
-        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
-             Statement stmt = conn.createStatement()) {
+        // Verificar que la API está disponible
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(API_URL))
+                    .GET()
+                    .build();
 
-            String sql = """
-                CREATE TABLE IF NOT EXISTS cards (
-                    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-                    number VARCHAR(20) NOT NULL,
-                    year INTEGER NOT NULL,
-                    month INTEGER NOT NULL,
-                    cvv VARCHAR(4) NOT NULL,
-                    type VARCHAR(20) NOT NULL,
-                    generated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-                )
-            """;
+            HttpResponse<String> response = httpClient.send(request,
+                    HttpResponse.BodyHandlers.ofString());
 
-            stmt.execute(sql);
-            System.out.println("[+] Database initialized");
-
-        } catch (SQLException e) {
-            System.err.println("[!] Database init error: " + e.getMessage());
+            if (response.statusCode() == 200) {
+                System.out.println("[+] API connection established");
+            } else {
+                System.out.println("[!] API responded with status: " + response.statusCode());
+            }
+        } catch (Exception e) {
+            System.err.println("[!] API connection error: " + e.getMessage());
+            System.err.println("[!] Make sure the API is running on " + API_URL);
         }
     }
 
     public void guardarTarjetas(List<TarjetaCredito> tarjetas) {
-        String sql = "INSERT INTO cards (number, year, month, cvv, type) VALUES (?, ?, ?, ?, ?)";
+        int successCount = 0;
+        int errorCount = 0;
 
-        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        for (TarjetaCredito tarjeta : tarjetas) {
+            try {
+                // Crear JSON manualmente (sin dependencias externas)
+                String json = String.format(
+                        "{\"numero\":\"%s\",\"mes\":%d,\"anio\":%d,\"ccv\":%s}",
+                        tarjeta.getNumero(),
+                        tarjeta.getMes(),
+                        tarjeta.getAño(),
+                        tarjeta.getCvv()
+                );
 
-            conn.setAutoCommit(false);
+                HttpRequest request = HttpRequest.newBuilder()
+                        .uri(URI.create(API_URL))
+                        .header("Content-Type", "application/json")
+                        .POST(HttpRequest.BodyPublishers.ofString(json))
+                        .build();
 
-            for (TarjetaCredito tarjeta : tarjetas) {
-                pstmt.setString(1, tarjeta.getNumero());
-                pstmt.setInt(2, tarjeta.getAño());
-                pstmt.setInt(3, tarjeta.getMes());
-                pstmt.setString(4, tarjeta.getCvv());
-                pstmt.setString(5, tarjeta.getTipo().getNombre());
-                pstmt.addBatch();
+                HttpResponse<String> response = httpClient.send(request,
+                        HttpResponse.BodyHandlers.ofString());
+
+                if (response.statusCode() == 200 || response.statusCode() == 201) {
+                    successCount++;
+                } else {
+                    errorCount++;
+                }
+
+            } catch (Exception e) {
+                errorCount++;
+                System.err.println("[!] Error sending card: " + e.getMessage());
             }
-
-            int[] resultados = pstmt.executeBatch();
-            conn.commit();
-
-            System.out.println("[+] " + resultados.length + " cards saved to database");
-
-        } catch (SQLException e) {
-            System.err.println("[!] Database save error: " + e.getMessage());
         }
+
+        System.out.println("[+] Cards sent to API: " + successCount + " success, " + errorCount + " errors");
     }
 }

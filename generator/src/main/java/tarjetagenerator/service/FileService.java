@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class FileService {
-    private static final String OUTPUT_DIR = "output";
+    private static final String OUTPUT_DIR = System.getProperty("user.home") + "/Carding/Trajets";
 
     static {
         try {
@@ -23,10 +23,7 @@ public class FileService {
         String filename = OUTPUT_DIR + "/cards_" + timestamp + ".txt";
 
         try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
-            writer.println("# CARDS GENERATED - " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
-            writer.println("# Format: number|year|month|cvv");
-            writer.println("# " + "=".repeat(50));
-
+            // Solo los datos, sin encabezados ni decoración
             for (TarjetaCredito tarjeta : tarjetas) {
                 writer.println(tarjeta.formatoEspecificado());
             }

@@ -1,0 +1,1 @@
+2026-04-24 14:32:42,160 - APIClient - ERROR - [31mExcepción al obtener tarjetas: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/v1/tarjetas (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8080): Failed to establish a new connection: [Errno 111] Connection refused"))[0m

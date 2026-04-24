@@ -15,7 +15,6 @@ public class MenuConsola {
     private static final String BG = "\u001B[1;32m"; // Verde Negrita
     private static final String R = "\u001B[31m";    // Rojo (Alerta)
     private static final String Y = "\u001B[33m";    // Amarillo (Advertencia)
-    private static final String B = "\u001B[34m";    // Azul
     private static final String C = "\u001B[36m";    // Cian (Info)
     private static final String W = "\u001B[37m";    // Blanco
     private static final String RESET = "\u001B[0m";
@@ -54,8 +53,8 @@ public class MenuConsola {
         String[] logs = {
                 "[*] INICIALIZANDO KERNEL...",
                 "[*] CARGANDO ALGORITMO_LUHN_V2.1...",
-                "[*] ESTABLECIENDO ENLACE CON BASE DE DATOS H2...",
-                "[*] VERIFICANDO CAPAS DE ENCRIPTACIÓN...",
+                "[*] VERIFICANDO ENDPOINT API REST...",
+                "[*] ESTABLECIENDO DIRECTORIO ~/Carding...",
                 "[*] CONEXIÓN SEGURA ESTABLECIDA."
         };
         for (String log : logs) {
@@ -97,8 +96,8 @@ public class MenuConsola {
         System.out.println(C + "\n[REPORTE DEL SISTEMA]");
         System.out.println(G + "--------------------------------------------------------------------");
         System.out.println(W + "ESTADO_MOD_10:  " + G + "ACTIVO");
-        System.out.println(W + "ENLACE_DB:      " + G + "LOCAL_H2_SQL");
-        System.out.println(W + "SALIDA_ARCHIVOS:" + G + " DIRECTORIO: /output/");
+        System.out.println(W + "ENLACE_API:     " + G + "http://localhost:8080/api/v1/tarjetas");
+        System.out.println(W + "SALIDA_ARCHIVOS:" + G + " ~/Carding/");
         System.out.println(W + "ESQUEMAS_DISP:  ");
         TipoTarjeta.mostrarOpciones();
         System.out.println(G + "--------------------------------------------------------------------" + RESET);
@@ -130,28 +129,30 @@ public class MenuConsola {
             return;
         }
 
+        // Barra de progreso
         System.out.print(G + "\n[*] CALCULANDO SUMAS DE COMPROBACIÓN LUHN [");
-        for (int i = 0; i < 10; i++) {
-            pausa(150);
+        System.out.flush();
+        List<TarjetaCredito> tarjetas = generador.generarTarjetas(cantidad, tipo);
+        for (int i = 0; i < 20; i++) {
+            pausa(30);
             System.out.print("#");
         }
         System.out.println("] 100%\n" + RESET);
 
-        List<TarjetaCredito> tarjetas = generador.generarTarjetas(cantidad, tipo);
-
+        // Mostrar datos generados
         System.out.println(G + ">> FLUJO DE DATOS DECODIFICADOS <<");
         System.out.println(G + "════════════════════════════════════════════════════════════════════" + RESET);
 
         for (int i = 0; i < tarjetas.size(); i++) {
             String raw = tarjetas.get(i).formatoEspecificado();
             System.out.printf(G + " [%03d] " + W + "=> " + G + "%s\n" + RESET, (i + 1), raw);
-            if (cantidad < 100) pausa(30); // Solo hacer scroll visual si no son demasiadas
         }
         System.out.println(G + "════════════════════════════════════════════════════════════════════" + RESET);
 
+        // Menú de guardado
         System.out.println(Y + "\n[?] SELECCIONE DESTINO DE ALMACENAMIENTO:");
-        System.out.println(G + " [1] EXPORTAR_A_TXT");
-        System.out.println(" [2] REGISTRAR_EN_BD");
+        System.out.println(G + " [1] EXPORTAR_A_TXT (" + W + "~/Carding/" + G + ")");
+        System.out.println(" [2] ENVIAR_A_API (" + W + "localhost:8080" + G + ")");
         System.out.println(" [3] EJECUTAR_AMBOS");
         System.out.println(" [4] DESCARTAR_DATOS");
         System.out.print(BG + "\nOPERADOR@ALMACENAMIENTO:~$ " + RESET);
@@ -164,18 +165,21 @@ public class MenuConsola {
                 System.out.println(G + "[+] ARCHIVO_CREADO: " + archivo + RESET);
             }
             case 2 -> {
-                System.out.println(C + "[*] INICIANDO PROTOCOLO SQL_HANDSHAKE..." + RESET);
+                System.out.println(C + "[*] INICIANDO PROTOCOLO API_HANDSHAKE..." + RESET);
                 databaseService.inicializarBaseDatos();
                 databaseService.guardarTarjetas(tarjetas);
-                System.out.println(G + "[+] TRANSACCIÓN_BD_EXITOSA" + RESET);
+                System.out.println(G + "[+] TRANSACCIÓN_API_EXITOSA" + RESET);
             }
             case 3 -> {
-                fileService.guardarEnArchivo(tarjetas);
+                String archivo = fileService.guardarEnArchivo(tarjetas);
+                System.out.println(G + "[+] ARCHIVO_CREADO: " + archivo + RESET);
+                System.out.println(C + "[*] INICIANDO PROTOCOLO API_HANDSHAKE..." + RESET);
                 databaseService.inicializarBaseDatos();
                 databaseService.guardarTarjetas(tarjetas);
-                System.out.println(G + "[+] REDUNDANCIA COMPLETADA: ARCHIVO Y BD SINCRONIZADOS" + RESET);
+                System.out.println(G + "[+] REDUNDANCIA COMPLETADA: ARCHIVO Y API SINCRONIZADOS" + RESET);
             }
-            default -> System.out.println(Y + "[!] DATOS VOLATILIZADOS (NO GUARDADOS)" + RESET);
+            case 4 -> System.out.println(Y + "[!] DATOS VOLATILIZADOS (NO GUARDADOS)" + RESET);
+            default -> System.out.println(R + "[!] OPCIÓN INVÁLIDA - DATOS DESCARTADOS" + RESET);
         }
     }
 
@@ -184,7 +188,6 @@ public class MenuConsola {
     }
 
     private void limpiarPantalla() {
-        // Funciona en terminales modernas/Linux/Mac. En Windows CMD depende de la versión.
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
