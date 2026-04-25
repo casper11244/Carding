@@ -1,0 +1,31 @@
+# Rust
+**/target/
+**/Cargo.lock
+
+# Java
+**/target/
+**/*.class
+**/*.jar
+
+# Python
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+*.log
+
+# IDE
+*.iml
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Database files
+*.db
+*.sqlite
+
+# Generated files
+Trajets/
+results.json
