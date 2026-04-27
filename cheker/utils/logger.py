@@ -1,7 +1,9 @@
 import logging
 import os
 from datetime import datetime
-from colorama import Fore, Style
+from colorama import Fore, Style, init
+
+init(autoreset=True)
 
 class Logger:
     """
@@ -24,20 +26,19 @@ class Logger:
             if log_file is None:
                 log_file = f"{log_dir}/{name}_{datetime.now().strftime('%Y%m%d')}.log"
 
-            # Configurar handler para archivo
+            # Configurar handler para archivo (sin colores)
             file_handler = logging.FileHandler(log_file)
             file_handler.setLevel(logging.INFO)
-
-            # Configurar handler para consola
-            console_handler = logging.StreamHandler()
-            console_handler.setLevel(logging.INFO)
-
-            # Formato de log
-            formatter = logging.Formatter(
+            file_formatter = logging.Formatter(
                 '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
             )
-            file_handler.setFormatter(formatter)
-            console_handler.setFormatter(formatter)
+            file_handler.setFormatter(file_formatter)
+
+            # Configurar handler para consola (sin formato para evitar duplicar colores)
+            console_handler = logging.StreamHandler()
+            console_handler.setLevel(logging.INFO)
+            console_formatter = logging.Formatter('%(message)s')
+            console_handler.setFormatter(console_formatter)
 
             # Agregar handlers
             self.logger.addHandler(file_handler)
@@ -45,16 +46,20 @@ class Logger:
 
     def debug(self, message: str):
         """Registra un mensaje de depuración"""
-        self.logger.debug(f"{Fore.CYAN}{message}{Style.RESET_ALL}")
+        self.logger.debug(f"{Fore.MAGENTA}→ {message}{Style.RESET_ALL}")
 
     def info(self, message: str):
         """Registra un mensaje informativo"""
-        self.logger.info(f"{Fore.WHITE}{message}{Style.RESET_ALL}")
+        self.logger.info(f"{Fore.CYAN}ℹ {message}{Style.RESET_ALL}")
 
     def warning(self, message: str):
         """Registra una advertencia"""
-        self.logger.warning(f"{Fore.YELLOW}{message}{Style.RESET_ALL}")
+        self.logger.warning(f"{Fore.YELLOW}⚠ {message}{Style.RESET_ALL}")
 
     def error(self, message: str):
         """Registra un error"""
-        self.logger.error(f"{Fore.RED}{message}{Style.RESET_ALL}")
+        self.logger.error(f"{Fore.RED}✖ ERROR: {message}{Style.RESET_ALL}")
+
+    def success(self, message: str):
+        """Registra un mensaje de éxito"""
+        self.logger.info(f"{Fore.GREEN}✓ {message}{Style.RESET_ALL}")

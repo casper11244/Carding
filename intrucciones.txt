@@ -30,3 +30,5 @@ intalar sudo dnf install gcc
 sudo dnf install pkg-config openssl-devel
 
 -------------------------------------------------------------------------
+sudo dnf install tor
+sudo systemctl start tor
