@@ -8,8 +8,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class FileService {
-    private static final String OUTPUT_DIR = System.getProperty("user.home") + "/Carding/Trajets";
-
+    private static final String OUTPUT_DIR =
+            Paths.get(System.getProperty("user.dir"), ".", "Trajets").normalize().toString();
     static {
         try {
             Files.createDirectories(Paths.get(OUTPUT_DIR));
