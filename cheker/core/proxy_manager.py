@@ -108,52 +108,37 @@ class ProxyManager:
             return False, float('inf')
 
     def verify_proxies(self, proxy_list: List[str], max_workers: int = None) -> List[str]:
-        """
-        Verifica una lista de proxies en paralelo y devuelve los que funcionan.
-        """
         if max_workers is None:
-            max_workers = getattr(self.config, 'PROXY_VERIFY_WORKERS', 100)
+            max_workers = getattr(self.config, 'PROXY_VERIFY_WORKERS', 80)
 
-        # Limitar a muestra máxima para no sobrecargar
-        max_sample = getattr(self.config, 'MAX_PROXY_SAMPLE', 1000)
+        max_sample = getattr(self.config, 'MAX_PROXY_SAMPLE', 500)
         if len(proxy_list) > max_sample:
-            self.logger.info(f"Tomando muestra de {max_sample} proxies de {len(proxy_list)} para verificación rápida")
+            self.logger.info(f"Tomando muestra de {max_sample} proxies")
             proxy_list = random.sample(proxy_list, max_sample)
 
-        self.logger.info(f"Verificando {len(proxy_list)} proxies (workers: {max_workers})...")
+        self.logger.info(f"Verificando {len(proxy_list)} proxies (soporte HTTPS)...")
 
         working_proxies = []
 
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
-            # Enviar todas las tareas
             future_to_proxy = {
-                executor.submit(self.test_proxy, proxy): proxy
+                executor.submit(self.test_proxy_https, proxy): proxy
                 for proxy in proxy_list
             }
 
-            # Recibir resultados a medida que completan
             for future in as_completed(future_to_proxy):
                 proxy = future_to_proxy[future]
                 try:
                     is_working, response_time = future.result()
-
                     if is_working:
                         with self.proxy_lock:
                             working_proxies.append(proxy)
-
-                        # Actualizar rendimiento si tenemos algoritmos disponibles
                         if self.algorithms:
                             self.algorithms.update_proxy_performance(proxy, True, response_time)
+                except Exception:
+                    pass
 
-                    else:
-                        # Actualizar rendimiento si tenemos algoritmos disponibles
-                        if self.algorithms:
-                            self.algorithms.update_proxy_performance(proxy, False, float('inf'))
-
-                except Exception as e:
-                    self.logger.error(f"Error al verificar proxy {proxy}: {str(e)}")
-
-        self.logger.success(f"Proxies funcionales: {len(working_proxies)}/{len(proxy_list)}")
+        self.logger.success(f"Proxies con soporte HTTPS: {len(working_proxies)}/{len(proxy_list)}")
         return working_proxies
 
     def update_proxy_list(self, force_update: bool = False) -> bool:
@@ -285,3 +270,89 @@ class ProxyManager:
             self.logger.debug(f"Guardados {len(self.proxies)} proxies en caché")
         except Exception as e:
             self.logger.error(f"Error al guardar proxies en caché: {str(e)}")
+
+    def test_proxy_https(self, proxy: str) -> Tuple[bool, float]:
+        """
+        Verifica si un proxy soporta conexiones HTTPS (túnel SSL).
+        """
+        try:
+            if proxy.startswith('socks5://'):
+                url = proxy.replace('socks5://', '')
+                proxy_dict = {"http": f"socks5://{url}", "https": f"socks5://{url}"}
+            elif proxy.startswith('socks4://'):
+                url = proxy.replace('socks4://', '')
+                proxy_dict = {"http": f"socks4://{url}", "https": f"socks4://{url}"}
+            elif proxy.startswith('https://'):
+                url = proxy.replace('https://', '')
+                proxy_dict = {"http": f"http://{url}", "https": f"https://{url}"}
+            else:
+                if '://' in proxy:
+                    url = proxy.split('://')[1]
+                else:
+                    url = proxy
+                proxy_dict = {"http": f"http://{url}", "https": f"http://{url}"}
+
+            start_time = time.time()
+
+            # Probar contra un sitio HTTPS real
+            response = requests.get(
+                "https://httpbin.org/ip",
+                proxies=proxy_dict,
+                timeout=5,
+                verify=False
+            )
+
+            response_time = time.time() - start_time
+            return response.status_code == 200, response_time
+
+        except Exception:
+            return False, float('inf')
+
+    def initialize(self):
+        """
+        Inicializa el gestor de proxies obteniendo y verificando proxies.
+        """
+    self.logger.info("Inicializando gestor de proxies...")
+
+    # Siempre agregar Tor como primer proxy
+    tor_proxy = getattr(self.config, 'TOR_PROXY', 'socks5://127.0.0.1:9050')
+
+    with self.proxy_lock:
+        if tor_proxy not in self.working_proxies:
+            self.working_proxies.insert(0, tor_proxy)
+            self.logger.success(f"Tor agregado como proxy principal: {tor_proxy}")
+
+    # Intentar cargar proxies cacheados
+    try:
+        with open(self.config.PROXY_CACHE_FILE, 'r') as f:
+            cached_proxies = [line.strip() for line in f if line.strip()]
+
+        if cached_proxies:
+            self.logger.info(f"Cargando {len(cached_proxies)} proxies desde caché")
+            verified_proxies = self.verify_proxies(cached_proxies)
+
+            with self.proxy_lock:
+                for p in verified_proxies:
+                    if p not in self.working_proxies:
+                        self.working_proxies.append(p)
+                self.proxies = self.working_proxies.copy()
+
+            self.logger.success(f"Total proxies: {len(self.working_proxies)} (incluye Tor)")
+            return True
+    except Exception as e:
+        self.logger.warning(f"No se pudieron cargar proxies cacheados: {str(e)}")
+
+    # Obtener proxies frescos como respaldo
+    try:
+        fresh = self.fetch_proxies_from_sources()
+        if fresh:
+            verified = self.verify_proxies(fresh)
+            with self.proxy_lock:
+                for p in verified:
+                    if p not in self.working_proxies:
+                        self.working_proxies.append(p)
+    except:
+        pass
+
+    self.logger.success(f"Proxies disponibles: {len(self.working_proxies)} (Tor + respaldo)")
+    return True

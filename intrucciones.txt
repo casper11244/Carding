@@ -30,5 +30,19 @@ intalar sudo dnf install gcc
 sudo dnf install pkg-config openssl-devel
 
 -------------------------------------------------------------------------
-sudo dnf install tor
+1. Instalar Tor
+bash
+sudo apt update
+sudo apt install tor -y
+2. Iniciar Tor
+bash
 sudo systemctl start tor
+sudo systemctl enable tor  # Para que inicie automáticamente
+3. Verificar que Tor está corriendo
+bash
+sudo systemctl status tor
+# Debe decir "active (running)"
+
+# Verificar puerto
+ss -tlnp | grep 9050
+# Debe mostrar: 127.0.0.1:9050
