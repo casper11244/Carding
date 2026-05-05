@@ -6,7 +6,6 @@
       <module fileurl="file://$PROJECT_DIR$/Carding.iml" filepath="$PROJECT_DIR$/Carding.iml" />
       <module fileurl="file://$PROJECT_DIR$/cheker/cheker.iml" filepath="$PROJECT_DIR$/cheker/cheker.iml" />
       <module fileurl="file://$PROJECT_DIR$/databsegestor/databsegestor.iml" filepath="$PROJECT_DIR$/databsegestor/databsegestor.iml" />
-      <module fileurl="file://$PROJECT_DIR$/generator/generator.iml" filepath="$PROJECT_DIR$/generator/generator.iml" />
     </modules>
   </component>
 </project>

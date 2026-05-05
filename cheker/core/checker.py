@@ -260,3 +260,18 @@ class CardChecker:
             except Exception as e:
                 self.logger.error(f"Error guardando resultados: {e}")
                 return False
+
+    def check_cards_from_api(self, gate_name: str = "amazon") -> List[Dict]:
+        """Obtiene tarjetas desde la API y las verifica."""
+        try:
+            cards = self.api_client.get_all_cards()
+            if not cards:
+                self.logger.error("No se recibieron tarjetas desde la API")
+                return []
+
+            self.logger.info(f"Obtenidas {len(cards)} tarjetas desde la API")
+            return self.check_cards(cards, gate_name)
+
+        except Exception as e:
+            self.logger.error(f"Error al obtener tarjetas desde API: {e}")
+            return []

@@ -55,7 +55,6 @@ class ProxyManager:
         return unique_proxies
 
     def test_proxy_https(self, proxy: str) -> Tuple[bool, float]:
-        """Verifica si el proxy soporta HTTPS correctamente."""
         try:
             if proxy.startswith('socks5://'):
                 clean = proxy.replace('socks5://', '')
@@ -70,15 +69,16 @@ class ProxyManager:
 
             start_time = time.time()
 
+            # Prueba más suave
             response = requests.get(
                 "https://httpbin.org/ip",
                 proxies=proxy_dict,
-                timeout=5,
+                timeout=7,      # aumentado
                 verify=False
             )
 
             response_time = time.time() - start_time
-            return response.status_code == 200, response_time
+            return response.status_code in (200, 301, 302), response_time   # acepta redirecciones
 
         except Exception:
             return False, float('inf')
